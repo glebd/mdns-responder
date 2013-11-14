@@ -354,8 +354,11 @@ CFLAGS_OS = -DNOT_HAVE_DAEMON -DNOT_HAVE_SA_LEN -DNOT_HAVE_SOCKLEN_T -DNOT_HAVE_
 	 -DLOG_PERROR=0 -D_XPG4_2 -D__EXTENSIONS__ -DHAVE_BROKEN_RECVIF_NAME -DTARGET_OS_SOLARIS
 CC = gcc
 LD = gcc -shared
+LDCONFIG = crle -u
 LINKOPTS = -lsocket -lnsl -lresolv
 JAVACFLAGS_OS += -I$(JDK)/include/solaris
+OPTIONALTARG = nss_mdns
+OPTINSTALL   = InstalledNSS
 ifneq ($(DEBUG),1)
 STRIP = strip
 endif

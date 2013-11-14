@@ -379,14 +379,28 @@ init_config ();
 #define ENTNAME  hostent
 #define DATABASE "hosts"
 
+#ifdef TARGET_OS_SOLARIS
+#include <nss_common.h>
+#else
 #include <nss.h>
+#endif
 	// For nss_status
 #include <netdb.h>
 	// For hostent
 #include <sys/types.h>
 	// For size_t
 
+#ifdef TARGET_OS_SOLARIS
+typedef nss_status_t nss_status;
+#define NSS_STATUS_NOTFOUND NSS_NOTFOUND
+#define NSS_STATUS_SUCCESS NSS_SUCCESS
+#define NSS_STATUS_TRYAGAIN NSS_TRYAGAIN
+#define NSS_STATUS_RETURN NSS_NOTFOUND
+#define NSS_STATUS_UNAVAIL NSS_UNAVAIL
+#define AF_LOCAL AF_UNIX
+#else
 typedef enum nss_status nss_status;
+#endif
 typedef struct hostent hostent;
 
 /*
