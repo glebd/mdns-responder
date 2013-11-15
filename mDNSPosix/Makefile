@@ -318,7 +318,7 @@ ifeq ($(wildcard $(RUNLEVELSCRIPTSDIR)/runlevels/default), $(RUNLEVELSCRIPTSDIR)
 else
 	$(LN) $@ $(RUNLEVELSCRIPTSDIR)/rc2.d/S52mdns
 	$(LN) $@ $(RUNLEVELSCRIPTSDIR)/rc3.d/S52mdns
-	$(LN) $@ $(RUNLEVELSCRIPTSDIR)/rc4.d/S52mdns
+	-$(LN) $@ $(RUNLEVELSCRIPTSDIR)/rc4.d/S52mdns
 	$(LN) $@ $(RUNLEVELSCRIPTSDIR)/rc5.d/S52mdns
 	$(LN) $@ $(RUNLEVELSCRIPTSDIR)/rc0.d/K16mdns
 	$(LN) $@ $(RUNLEVELSCRIPTSDIR)/rc6.d/K16mdns
