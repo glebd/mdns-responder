@@ -361,7 +361,7 @@ mDNSexport TCPSocket *mDNSPlatformTCPAccept(TCPSocketFlags flags, int sd)
 	TCPSocket *sock = mallocL("TCPSocket/mDNSPlatformTCPAccept", sizeof(TCPSocket));
 	if (!sock) return(mDNSNULL);
 	mDNSPlatformMemZero(sock, sizeof(*sock));
-	sock->fd = fd;
+	sock->fd = sd;
 	sock->flags = flags;
 	return sock;
 	}
