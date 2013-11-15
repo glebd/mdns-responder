@@ -92,6 +92,7 @@ CFLAGS_OS = -DNOT_HAVE_DAEMON -DNOT_HAVE_SA_LEN -DNOT_HAVE_SOCKLEN_T -DNOT_HAVE_
 	 -DLOG_PERROR=0 -D_XPG4_2 -D__EXTENSIONS__ -DHAVE_BROKEN_RECVIF_NAME -DTARGET_OS_SOLARIS
 CC = gcc
 LD = gcc -shared
+# -u means rescan and update database
 LDCONFIG = crle -u
 LINKOPTS = -lsocket -lnsl -lresolv
 JAVACFLAGS_OS += -I$(JDK)/include/solaris
@@ -112,7 +113,8 @@ else
 
 ifeq ($(os),netbsd)
 CFLAGS_OS =
-LDCONFIG = ldconfig
+# -m means 'merge into existing database', -R means 'rescan directories'
+LDCONFIG = ldconfig -mR
 else
 
 ifeq ($(os),freebsd)
@@ -131,12 +133,14 @@ CFLAGS_OS =
 CFLAGS_PTHREAD   = -pthread -D_THREAD_SAFE
 LINKOPTS_PTHREAD = -pthread
 JAVACFLAGS_OS += -I$(JDK)/include/freebsd
-LDCONFIG = ldconfig
+# -m means 'merge into existing database', -R means 'rescan directories'
+LDCONFIG = ldconfig -mR
 else
 
 ifeq ($(os),openbsd)
 CFLAGS_OS = -DHAVE_BROKEN_RECVDSTADDR
-LDCONFIG = ldconfig
+# -m means 'merge into existing database', -R means 'rescan directories'
+LDCONFIG = ldconfig -mR
 else
 
 ifeq ($(os),x)
@@ -299,8 +303,7 @@ $(INSTBASE)/lib/libdns_sd.$(LDSUFFIX).$(LIBVERS): $(BUILDDIR)/libdns_sd.$(LDSUFF
 	$(CP) $< $@
 	$(LN) $@ $(INSTBASE)/lib/libdns_sd.$(LDSUFFIX)
 ifdef LDCONFIG
-    # -m means 'merge into existing database', -R means 'rescan directories'
-	$(LDCONFIG) -mR
+	$(LDCONFIG)
 endif
 
 $(INSTBASE)/include/dns_sd.h: $(SHAREDDIR)/dns_sd.h
@@ -342,7 +345,9 @@ $(INSTBASE)/bin/dns-sd: ../Clients/build/dns-sd
 
 $(NSSINSTPATH)/$(NSSLINKNAME): $(NSSINSTPATH)/$(NSSLIBFILE)
 	$(LN) $< $@
-	ldconfig
+ifdef LDCONFIG
+	$(LDCONFIG)
+endif
 
 $(NSSINSTPATH)/$(NSSLIBFILE): $(BUILDDIR)/$(NSSLIBFILE)
 	$(CP) $< $@
